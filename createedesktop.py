@@ -46,10 +46,10 @@ def categories_of_file():
 def terminal_of_file():
     global terminal
     terminal_input = simpledialog.askstring('Terminal', 'T or F')
-    if terminal_input.upper() == 'T' or terminal_input.lower() == 't':
+    if terminal_input is not None and (terminal_input.upper() == 'T' or terminal_input.lower() == 't'):
         terminal = True
         print("The app will run in the terminal")
-    elif terminal_input.upper() == 'F' or terminal_input.lower() == 'f':
+    elif terminal_input is not None and (terminal_input.upper() == 'F' or terminal_input.lower() == 'f'):
         terminal = False
         print("The app will not run in the terminal")
 
