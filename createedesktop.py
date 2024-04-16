@@ -1,17 +1,21 @@
-from fileinput import filename
 import tkinter as tk
 from tkinter import messagebox, filedialog, simpledialog
 import os
-from pathlib import Path
+import pathlib 
 
+
+filefolder = os.path.expanduser("~/.local/share/applications")
 
 
 def name_of_file():
-    name = simpledialog.askstring('Name of file', 'Enter the name of the file')
-    if name:
-        print("Name of App: ", name)
+    global filename
+    filename = simpledialog.askstring('Name of file', 'Enter the name of the file')
+    if filename:
+        print("Name of App: ", filename)
+
 
 def comment_of_file():
+    global comment
     comment = simpledialog.askstring('Comment', 'Enter a comment for the file(can be empty)')
     if comment:
         print("Comment of App: ", comment)
@@ -19,11 +23,13 @@ def comment_of_file():
         print("No comment for the app")
 
 def exec_of_file():
+    global exec_path
     exec_path = filedialog.askopenfilename(title='Select Executable')
     if exec_path:
         print("The app will be ran: ", exec_path)
 
 def icon_of_file():
+    global icon_path
     icon_path = filedialog.askopenfilename(title='Select Icon', filetypes=[('Icon Files', '*.png',), ('Icon Files', '*.ico'), ('Icon Files', '*.svg'), ('Icon Files', '*.jpg')])
     if icon_path:
         print("The app will have this icon: ", icon_path)
@@ -31,26 +37,39 @@ def icon_of_file():
         print("The app will not have an icon")
 
 def categories_of_file():
+    global categories
     categories = simpledialog.askstring('Categories', 'Enter the categories for the file')
     if categories:
         print("Categories of App: ", categories)
 
+
 def terminal_of_file():
-    terminal = simpledialog.askstring('Terminal', 'T or F')
-    if terminal == 'T':
+    global terminal
+    terminal_input = simpledialog.askstring('Terminal', 'T or F')
+    if terminal_input.upper() == 'T' or terminal_input.lower() == 't':
+        terminal = True
         print("The app will run in the terminal")
-    elif terminal == 'F':
-        print("The app will not run in the terminal")
-    elif terminal == 't':
-        print("The app will run in the terminal")
-    elif terminal == 'f':
+    elif terminal_input.upper() == 'F' or terminal_input.lower() == 'f':
+        terminal = False
         print("The app will not run in the terminal")
 
-filefolder = "~.local/share/applications"
-filename = name
+
 
 def create_the_file():
-    pathlib.Path(f"{filefolder}/{filename}.desktop").touch()
+    file_path = f"{filefolder}/{filename}.desktop"
+    with open(file_path, 'w') as file:
+        file.write("[Desktop Entry]\n")
+        file.write("Type=Application\n")
+        file.write("Encoding=UTF-8\n")
+        file.write(f"Name={filename}\n")
+        file.write(f"Comment={comment}\n")
+        file.write(f"Exec={exec_path}\n")
+        file.write(f"Icon={icon_path}\n")
+        file.write(f"Categories={categories}\n")
+        file.write(f"Terminal={terminal}")
+
+
+
 
 #here
 
